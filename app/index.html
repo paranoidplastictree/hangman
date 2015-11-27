@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
-	<head><title>Hangman</title></head>
+	<head>
+		<title>Hangman</title>
+		<link rel="stylesheet" type="text/css" href="css/hangman.css"/>
+	</head>
 	<body>
-		<script src="scripts/hangman.js"></script>
-		<div id="gallows"></div>
-		<div id="mask"></div>
-		<div id="misses"></div>
-		<div>
-			<input type="text" id="guess-input" />	
-			<input type="button" value="submit" onclick="submitGuess();"/>
+		<div id="gallows">
+			<canvas id="stickman">Get a new browser. Yours does NOT support HTML5 Canvas</canvas>	
 		</div>
+		<div id="mask"></div>
+		<div class="wrong-guesses">
+			<label>Wrong Guesses:</label>
+			<span id="misses"></span>
+		</div>
+		<div>
+			<input type="text" id="guess-input" onkeyup="return submitGuess(event)" />	
+		</div>
+		<div><input type="button" value="new game" onclick="newGame();"/></div>
+		<div id="results">
+			
+		</div>
+		<script src="scripts/hangman.js"></script>
 	</body>
-
 </html>
