@@ -1,6 +1,28 @@
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:12px;
+}
 canvas
 {
   height: 200px;
   width: 200px;
-  border: 1px dotted #333;
+}
+.header {
+  border-bottom:1px solid #cacaca;
+  margin-bottom:20px;
+}
+.header button {margin-top:8px;}
+#mask{
+  font-size:4em;
+  margin:25px 0;
+  padding:10px;
+  border: 1px solid #cacaca;
+}
+#misses {font-size:3em;}
+#results {font-size:4em;}
+#guess-input {
+  width:80px;
+  margin-top:45px;
+  font-size:4em;
+  text-align:center;
 }

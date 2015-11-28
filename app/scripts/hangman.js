@@ -92,9 +92,6 @@ var Game = (function () {
             if (char.match(/[a-z]/i)) {
                 return "_";
             }
-            else if (char === " ") {
-                return "  ";
-            }
             else
                 return char;
         });
@@ -140,7 +137,7 @@ var Game = (function () {
             results.innerHTML = "You guessed it!";
         }
         else {
-            results.innerHTML = "Better luck next time :/";
+            results.innerHTML = "You lose. Better luck next time :/";
         }
         results.style.display = "block";
     };

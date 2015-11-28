@@ -101,9 +101,6 @@ class Game {
 			if(char.match(/[a-z]/i)){
 				return "_";
 			}
-			else if(char === " "){
-				return "  ";
-			}
 			else return char;
 		});
 		
@@ -155,7 +152,7 @@ class Game {
 			results.innerHTML = "You guessed it!";	
 		}
 		else{
-			results.innerHTML = "Better luck next time :/";
+			results.innerHTML = "You lose. Better luck next time :/";
 		}
 		results.style.display = "block"
 	}
