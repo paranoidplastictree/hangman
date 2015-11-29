@@ -17,9 +17,10 @@ canvas
   margin:25px 0;
   padding:10px;
   border: 1px solid #cacaca;
+  text-align:center;
 }
 #misses {font-size:3em;}
-#results {font-size:4em;}
+#results {font-size:4em;text-align:center;}
 #guess-input {
   width:80px;
   margin-top:45px;
