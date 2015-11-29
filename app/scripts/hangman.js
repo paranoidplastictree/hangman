@@ -76,18 +76,47 @@ var Gallows = (function () {
     };
     return Gallows;
 })();
+var RandomWordGenerator = (function () {
+    function RandomWordGenerator() {
+    }
+    RandomWordGenerator.prototype.getRandomWord = function (callback, wordLength) {
+        if (wordLength === void 0) { wordLength = 0; }
+        if (wordLength === 0) {
+            wordLength = this.getRandomInt(3, 8);
+        }
+        var requestUrl = "http://randomword.setgetgo.com/get.php?len=" + wordLength;
+        this.httpGetAsync(requestUrl, callback);
+    };
+    RandomWordGenerator.prototype.getRandomInt = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    RandomWordGenerator.prototype.httpGetAsync = function (theUrl, callback) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText);
+        };
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+        xmlHttp.send(null);
+    };
+    return RandomWordGenerator;
+})();
 var Game = (function () {
-    function Game(secret) {
-        this.secret = secret;
-        this.mask = secret.split('');
-        this.gallows = new Gallows();
-        this.incorrectGuesses = new Array();
+    function Game() {
         var input = document.getElementById("guess-input");
         var missesDiv = document.getElementById("misses");
         var results = document.getElementById("results");
+        this.gallows = new Gallows();
+        this.incorrectGuesses = new Array();
+        this.wordGenerator = new RandomWordGenerator();
+        this.wordGenerator.getRandomWord(this.getSecret);
         missesDiv.innerHTML = "";
         results.style.display = "none";
         input.focus();
+    }
+    Game.prototype.getSecret = function (data) {
+        this.secret = data;
+        this.mask = this.secret.split('');
         this.mask = this.mask.map(function (char) {
             if (char.match(/[a-z]/i)) {
                 return "_";
@@ -97,13 +126,13 @@ var Game = (function () {
         });
         var maskDiv = document.getElementById("mask");
         maskDiv.innerHTML = this.mask.join(" ");
-    }
+    };
     Game.prototype.validateGuess = function () {
         var input = document.getElementById("guess-input");
         var maskDiv = document.getElementById("mask");
         var missesDiv = document.getElementById("misses");
-        if (this.secret.indexOf(input.value) >= 0 && input.value.length === 1) {
-            // success!!
+        if (this.secret != undefined && this.secret.indexOf(input.value) >= 0 && input.value.length === 1) {
+            // match found!
             for (var i = 0; i < this.secret.length; i++) {
                 var index = this.secret.indexOf(input.value, i);
                 if (index >= 0) {
@@ -138,15 +167,17 @@ var Game = (function () {
         }
         else {
             results.innerHTML = "You lose. Better luck next time :/";
+            var maskDiv = document.getElementById("mask");
+            maskDiv.innerHTML = this.secret;
         }
         results.style.display = "block";
     };
     return Game;
 })();
-var game = new Game("nacho libre!");
+var game = new Game();
 function submitGuess(e) {
     game.validateGuess();
 }
 function newGame() {
-    game = new Game("thom yorke?");
+    game = new Game();
 }

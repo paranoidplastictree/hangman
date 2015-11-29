@@ -77,26 +77,54 @@ class Gallows {
 		this.bodyState = this.bodyState + 1;
 	}
 }
+class RandomWordGenerator {
+	getRandomWord(callback, wordLength:number = 0) {
+		if(wordLength===0){
+			wordLength = this.getRandomInt(3,8);
+		}
+		
+        var requestUrl = "http://randomword.setgetgo.com/get.php?len=" + wordLength;
+        this.httpGetAsync(requestUrl, callback);
+    }
+	private getRandomInt(min, max) {
+    	return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	private httpGetAsync(theUrl, callback)
+	{
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function() { 
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+				callback(xmlHttp.responseText);
+		}
+		xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+		xmlHttp.send(null);
+	}
+}
 class Game {
 	mask: Array<string>;
 	secret: string;
 	incorrectGuesses: Array<string>;
 	gallows: Gallows;
+	wordGenerator: RandomWordGenerator;
 	
-	constructor(secret: string){
-		this.secret = secret;
-		this.mask = secret.split('');
-		this.gallows = new Gallows();
-		this.incorrectGuesses = new Array<string>();
-		
+	constructor(){
 		var input: HTMLInputElement = <HTMLInputElement>document.getElementById("guess-input");
 		var missesDiv: HTMLElement = document.getElementById("misses");
 		var results = document.getElementById("results");
 		
+		this.gallows = new Gallows();
+		this.incorrectGuesses = new Array<string>();
+		this.wordGenerator = new RandomWordGenerator();
+		this.wordGenerator.getRandomWord(this.getSecret);
+		
 		missesDiv.innerHTML = "";
 		results.style.display = "none";
 		input.focus();
-		
+	}
+	
+	getSecret(data){
+		this.secret = data;
+		this.mask = this.secret.split('');
 		this.mask = this.mask.map(function(char){
 			if(char.match(/[a-z]/i)){
 				return "_";
@@ -113,8 +141,8 @@ class Game {
 		var maskDiv: HTMLElement = document.getElementById("mask");
 		var missesDiv: HTMLElement = document.getElementById("misses");
 		
-		if(this.secret.indexOf(input.value)>=0 && input.value.length===1){
-			// success!!
+		if(this.secret != undefined && this.secret.indexOf(input.value)>=0 && input.value.length===1){
+			// match found!
 			for(var i=0;i<this.secret.length;i++){
 				var index = this.secret.indexOf(input.value, i)
 				if(index>=0){
@@ -127,7 +155,7 @@ class Game {
 				this.showResults(true);
 			}
 		}
-		else if(input.value.length>1){
+		else if(input.value.length>1){ // invalid, we need just 1 letter
 			alert('invalid guess!');
 		}
 		else {
@@ -153,16 +181,17 @@ class Game {
 		}
 		else{
 			results.innerHTML = "You lose. Better luck next time :/";
+			var maskDiv: HTMLElement = document.getElementById("mask");	
 		}
 		results.style.display = "block"
 	}
 }
 
-var game = new Game("nacho libre!");
+var game = new Game();
 
 function submitGuess(e){
 	game.validateGuess();
 }
 function newGame(){
-	game = new Game("thom yorke?");
+	game = new Game();
 }
