@@ -1,6 +1,6 @@
 # Hangman
 
-Hangman is an online game based on the word-game typically played with paper/pencil. Here's the gist of the game, in case you've been living under a rock somewhere:
+Hangman is a [github-page] web-based game based on the word-game typically played with paper/pencil. Here's the gist of the game, in case you've been living under a rock somewhere:
 
   - Goal is to guess the word before full stick figure is drawn
   - CPU selects a random word (3-6 characters in length)
@@ -56,7 +56,7 @@ MIT
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
-
+   [github-page]:<http://paranoidplastictree.github.io/hangman>
    [git-repo-url]: <https://github.com/paranoidplastictree/hangman.git>
    [tim storms]: <http://timstorms.me>
    [@bowtiekiller]: <http://twitter.com/bowtiekiller>
